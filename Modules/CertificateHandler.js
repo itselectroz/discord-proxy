@@ -64,6 +64,25 @@ module.exports.load_certificates = () => {
 }
 
 /**
+ * Internal function for writing certificates in memory to files.
+ * Used in create_certificates to prevent callback hell.
+ * @returns {Nothing}
+ */
+function write_certificates()
+{
+    return new Promise((resolve, reject) => {
+        fs.writeFile(global.certificate_paths.key, global.certificates.key, callback = (err) => {
+            console.log(err);
+            fs.writeFile(global.certificate_paths.cert, global.certificates.key, callback = (err2) => {
+                console.log(err2);
+                resolve();
+            });
+        });
+    });
+}
+
+
+/**
  * Creates valid SSL certificate & keys for a https server, writes them to their respective files and loads them into the global.certificates dictionary. 
  * Creation alternative to load_certificates.
  * 
@@ -71,15 +90,16 @@ module.exports.load_certificates = () => {
  */
 module.exports.create_certificates = () => {
     return new Promise((response, reject) => {
-        pem.createCertificate({ days: 365, selfSigned: true }, (err, keys) => {
-            console.log(err);
-            console.log(keys);
+        pem.createCertificate({csrConfigFile: "./Certificates/openssl.cnf", days: 365, selfSigned: true }, (err, keys) => {
+            console.log("hm");
             if(err)
                 reject(err);
             global.certificates = {
                 key: keys.serviceKey,
                 cert: keys.certificate
             };
-        });
+            console.log("yaes");
+            write_certificates().then(response).catch(reject);
+        });        
     });
 }
