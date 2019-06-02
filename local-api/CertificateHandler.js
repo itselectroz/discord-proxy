@@ -4,8 +4,9 @@ const fs      = require("fs");
 
 
 global.certificate_paths = {
-	key: "../Certificates/cert.key",
-	cert: "../Certificates/cert.crt"
+	key: "./Certificates/cert.key",
+	cert: "./Certificates/cert.crt",
+	config: __dirname+"\\..\\Certificates\\openssl.cnf",
 };
 
 module.exports = {
@@ -46,6 +47,7 @@ module.exports = {
 			});
 		});
 	},
+
 	/**
 	 * Creates valid SSL certificate & keys for a https server, writes them to their respective files and loads them into the global.certificates dictionary.
 	 * Creation alternative to load_certificates
@@ -53,14 +55,14 @@ module.exports = {
 	 */
 	create_certificates: () => {
 		return new Promise((response, reject) => {
-			pem.createCertificate({csrConfigFile: "./Certificates/openssl.cnf", days: 365, selfSigned: true }, (err, keys) => {
-				console.log("hm");
-				if (err) reject(err);
+			pem.createCertificate({csrConfigFile: global.certificate_paths.config, days: 365, selfSigned: true }, (err, keys) => {
+				console.log(err);
+				if (err != undefined) reject(err);
+
 				global.certificates = {
 					key: keys.serviceKey,
 					cert: keys.certificate
 				};
-				console.log("yaes");
 				write_certificates().then(response).catch(reject);
 			});
 		});
@@ -74,9 +76,9 @@ module.exports = {
  */
 function write_certificates() {
 	return new Promise((resolve) => {
-		fs.writeFile(global.certificate_paths.key, global.certificates.key, callback = (err) => {
+		fs.writeFile(global.certificate_paths.key, global.certificates.key, (err) => {
 			console.log(err);
-			fs.writeFile(global.certificate_paths.cert, global.certificates.key, callback = (err2) => {
+			fs.writeFile(global.certificate_paths.cert, global.certificates.key, (err2) => {
 				console.log(err2);
 				resolve();
 			});
