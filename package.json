@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/itselectroz/discord-proxy/issues"
   },
-  "homepage": "https://github.com/itselectroz/discord-proxy#readme"
+  "homepage": "https://github.com/itselectroz/discord-proxy#readme",
+  "dependencies": {
+    "bluebird": "^3.5.5",
+    "express": "^4.17.1",
+    "pem": "^1.14.2"
+  }
 }
