@@ -37,10 +37,10 @@ module.exports = {
 	 */
 	stop_server: () => {
 		return new Promise((resolve, reject) => {
-			if(!global.server)
-				return true;
+			if(!global.server || !global.server.instance)
+				return resolve(true);
 			
-			global.server.close(() => {
+			global.server.instance.close(() => {
 				resolve(true);
 			});
 		});
