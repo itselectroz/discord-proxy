@@ -18,7 +18,7 @@
   "homepage": "https://github.com/itselectroz/discord-proxy#readme",
   "dependencies": {
     "bluebird": "^3.5.5",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "pem": "^1.14.2",
     "simple-hosts": "^1.2.3"
   }
